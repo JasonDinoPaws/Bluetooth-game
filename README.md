@@ -1,4 +1,7 @@
-## Installing PyzBluez
+## Installing
+pip install tkinter
+pip install pyautogui
+
 
 ## Needs Work
 - [ ] Yes/No Connect
