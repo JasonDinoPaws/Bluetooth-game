@@ -1,5 +1,5 @@
 ## Installing
-pip install tkinter
+pip install tk
 pip install pyautogui
 
 
