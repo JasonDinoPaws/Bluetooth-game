@@ -1,7 +1,7 @@
 ## Installing
 pip install tk
 pip install pyautogui
-
+pip install pillow
 
 ## Needs Work
 - [ ] Yes/No Connect
