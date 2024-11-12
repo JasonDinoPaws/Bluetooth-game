@@ -14,6 +14,7 @@ Can = Canvas(root,width=xSize,height=ySize,background="#000000", highlightthickn
 Can.pack()
 
 img = ImageTk.PhotoImage(Image.open("Client/ConnectPixel.png").resize((xSize,ySize)))
+
 def Connect():
     mess = None
 
@@ -32,12 +33,3 @@ def Connect():
     while mess == None:
         print()
     return mess
-
-try:
-    while root.winfo_exists():
-        root.update()
-
-except (EOFError,KeyboardInterrupt):
-    pass
-
-root.destroy()

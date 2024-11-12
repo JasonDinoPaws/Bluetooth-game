@@ -12,6 +12,7 @@ try:
 
         if data.decode() == "1":
             print(ClientUI.Connect())
+        ClientUI.root.update()
 except OSError as e:
     pass
 
