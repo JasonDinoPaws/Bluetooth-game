@@ -6,6 +6,7 @@ server.listen(1)
 
 client, addr = server.accept()
 
+print("Connected")
 try:
     while True:
         client.send(input("Send Message: ").encode())
