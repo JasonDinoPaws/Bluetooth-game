@@ -15,10 +15,24 @@ Can.pack()
 
 img = ImageTk.PhotoImage(Image.open("Client/ConnectPixel.png").resize((xSize,ySize)))
 def Connect():
+    mess = None
+
+    def yesp():
+        mess = "yes"
+        
+    def nop():
+        mess = "no"
+
     Can.create_image(0,0,image=img,anchor="nw")
     Can.create_rectangle(0,ySize/2-(.15*ySize),xSize,ySize/2+(.15*ySize),fill="white")
+    yes = Button(Can,text="Yes", command=yesp)
+    yes.pack()
+    no = Button(Can,text="no", command=nop)
+    no.pack()
+    while mess == None:
+        print()
+    return mess
 
-Connect()
 try:
     while root.winfo_exists():
         root.update()

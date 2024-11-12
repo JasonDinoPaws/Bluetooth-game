@@ -10,8 +10,8 @@ try:
         if not data:
             break
 
-        if data == "Coonect":
-            client.send(ClientUI.Connect())
+        if data.decode() == "1":
+            print(ClientUI.Connect())
 except OSError as e:
     pass
 

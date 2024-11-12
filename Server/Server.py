@@ -8,11 +8,11 @@ client, addr = server.accept()
 
 try:
     while True:
+        client.send(input("Send Message: ").encode())
         data = client.recv(1024)
         if not data:
             break
         print(f"Message from {addr}: {data.decode()}")
-        client.send(input("EnterMessage:").encode())
 except OSError as e:
     pass
 
