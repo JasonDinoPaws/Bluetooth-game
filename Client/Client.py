@@ -11,7 +11,8 @@ try:
             break
 
         if data.decode() == "1":
-            print(ClientUI.Connect())
+            client.send(str(ClientUI.Connect()).encode())
+    print("Update Window")
 except OSError as e:
     pass
 
