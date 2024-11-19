@@ -1,6 +1,6 @@
 from tkinter import *
 from PIL import Image, ImageTk
-from random import randint
+from random import *
 
 def CreateWindow():
     root = Tk()
@@ -67,4 +67,5 @@ def Connect(device="Fsih"):
 images = ["Lucky.png","melancholu.png","Wana.png"]
 def Virus():
     root, Can, xSize, ySize = CreateWindow()
-
+    root.mainloop()
+    root.destroy()
