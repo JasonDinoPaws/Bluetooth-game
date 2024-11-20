@@ -67,7 +67,7 @@ def Connect(device="Fsih"):
 images = ["Lucky.png","melancholy.png","Wana.png"]
 def Virus():
     root, Can, xSize, ySize = CreateWindow()
-    img = ImageTk.PhotoImage(Image.open("melancholy.png"))
+    img = ImageTk.PhotoImage(Image.open(images[random()*len(images)]))
     panel = Label(root, image = img)
     panel.pack(side = "bottom", fill = "both", expand = "yes")
     root.mainloop()
