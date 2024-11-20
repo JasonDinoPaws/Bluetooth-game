@@ -12,10 +12,14 @@ try:
         if not data:
             break
 
-        if data.decode() == "1":
-            client.send(str(ClientUI.Connect()).encode())
+        dec = data.decode()
+        if dec == "1":
+            client.send(ClientUI.Connect().encode())
+        elif dec == "2":
+            ClientUI.Virus()
     print("Update Window")
 except OSError as e:
     pass
+
 
 client.close()
