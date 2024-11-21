@@ -1,27 +1,25 @@
 from tkinter import *
 import threading
-saved = []
+saved = [""]
+obj = []
 window:Tk = None
-Can:Canvas = None
 
 def start():
-    global window,Can
+    global window
     root = Tk()
-    root.configure()
+    root.configure(background="#000000")
     root.wm_title("Shell")
-    xSize = root.winfo_screenwidth()/2.5
-    ySize = root.winfo_screenheight()/3
-
-    c = Canvas(root,width=xSize,bg='#000000',height=ySize,borderwidth=0,highlightthickness=0)
-    c.pack()
+    xSize = root.winfo_screenwidth()
+    ySize = root.winfo_screenheight()
 
     window = root
-    Can = c
     root.mainloop()
 
-def textupdate(text):
-    global window,Can
-    Can.delete("all")
+def textupdate(text=""):
+    global window
+    for i in obj:
+        i.destroy()
+
     if len(text) == 0:
         saved.append("")
     else:
@@ -30,8 +28,10 @@ def textupdate(text):
     if len(saved) > 10:
         saved.pop(0)
 
-    for i in range(len(text)):
-        Can.create(2,i*15,text=saved[i],font="Segoe 15")
+    for t in saved:
+        lav = Label(window,text=t,font="Segoe 15",anchor="ne")
+        obj.append(lav)
+        lav.pack(pady=window.winfo_height()*.005)
     window.update()
 
 thr = threading.Thread(target=start)

