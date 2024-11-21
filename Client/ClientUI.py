@@ -70,7 +70,7 @@ def Connect(device="Fsih"):
     window = None
     return mess.get()
 
-images = ["Lucky.png","melancholy.png","Wana.png","evil.jpg","linux.png","miuk.jpg","moast.png","nef.jpg","romain.jpg","youtube.png"]
+images = ["Lucky.png","melancholy.png","Wana.png","evil.jpg","liunx.png","miuk.jpg","moast.png","nef.jpg","romain.jpg","youtube.png"]
 sfx = ["Clown","Rick"]
 def Virus():
     global window
@@ -84,7 +84,7 @@ def Virus():
         panel = Label(root, image = img)
         panel.pack(side = "bottom", fill = "both", expand = "yes")
     else:
-        num = int(random()*len(images))
+        num = int(random()*len(num))
         imop = Image.open(sfx[num]+".png")
         img = ImageTk.PhotoImage(imop)
         panel = Label(root, image = img)
