@@ -2,17 +2,18 @@ from tkinter import *
 from PIL import Image, ImageTk
 from random import *
 
-def CreateWindow():
+window:Tk = None
+
+def CreateWindow(color = '#fcbd5d'):
     root = Tk()
-    root.configure(background='#fcbd5d')
+    root.configure(background=color)
     root.wm_attributes('-transparentcolor','#fcbd5d')
     root.attributes("-fullscreen",True)
     root.wm_title("event")
     xSize = root.winfo_screenwidth()
     ySize = root.winfo_screenheight()
     
-    Can = Canvas(root,width=xSize,height=ySize,background="#fcbd5d", highlightthickness=0)
-
+    Can = Canvas(root,width=xSize,height=ySize,background=color, highlightthickness=0)
 
     return root,Can,xSize,ySize
 
@@ -27,7 +28,11 @@ def Create_Button(root:Tk, Canvas:Canvas, x1,y1,x2,y2, Text="Hello", FontSize = 
 
 
 def Connect(device="Fsih"):
+    global window
     root, Can, xSize, ySize = CreateWindow()
+    window = root
+
+
     mess = StringVar()
     x1 = .37*xSize
     y1 = .3916*ySize
@@ -62,12 +67,22 @@ def Connect(device="Fsih"):
         root.update()
 
     root.destroy()
+    window = None
     return mess.get()
 
 images = ["Lucky.png","melancholy.png","Wana.png"]
 def Virus():
-    root, Can, xSize, ySize = CreateWindow()
-    img = ImageTk.PhotoImage(Image.open(images[int(random()*len(images))]))
-    panel = Label(root, image = img)
-    panel.pack(side = "bottom", fill = "both", expand = "yes")
+    global window
+    root, Can, xSize, ySize = CreateWindow("#000000")
+    window = root
+
+    if True:
+        num = int(random()*len(images))
+        print(num)
+        imop = Image.open("C:/Users/jaypa/OneDrive/Documents/GitHub/Bluetooth-game/Client/"+images[num])
+        img = ImageTk.PhotoImage(imop)
+        panel = Label(root, image = img)
+        panel.pack(side = "bottom", fill = "both", expand = "yes")
+    else:
+        print("SFX")
     root.mainloop()

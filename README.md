@@ -1,5 +1,6 @@
 ## Installing
 pip install tk
+pip install setuptools
 pip install pyautogui
 pip install pillow
 
