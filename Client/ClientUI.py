@@ -64,8 +64,10 @@ def Connect(device="Fsih"):
     root.destroy()
     return mess.get()
 
-images = ["Lucky.png","melancholu.png","Wana.png"]
+images = ["Lucky.png","melancholy.png","Wana.png"]
 def Virus():
     root, Can, xSize, ySize = CreateWindow()
+    img = ImageTk.PhotoImage(Image.open(images[int(random()*len(images))]))
+    panel = Label(root, image = img)
+    panel.pack(side = "bottom", fill = "both", expand = "yes")
     root.mainloop()
-    root.destroy()
