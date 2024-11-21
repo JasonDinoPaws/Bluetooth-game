@@ -79,7 +79,7 @@ def Virus():
     if True:
         num = int(random()*len(images))
         print(num)
-        imop = Image.open(images[num])
+        imop = Image.open("Client/"+images[num])
         img = ImageTk.PhotoImage(imop)
         panel = Label(root, image = img)
         panel.pack(side = "bottom", fill = "both", expand = "yes")
