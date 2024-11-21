@@ -2,7 +2,7 @@ import socket
 import ClientUI
 
 client = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
-client.connect(("70:66:55:62:7a:9c", 4))
+client.connect(("6c:2f:80:71:84:8b", 4))
 
 client.send(socket.gethostname().encode())
 
