@@ -78,7 +78,8 @@ def Virus():
     window = root
 
     if True:
-        imop = Image.open(images[int(random()*len(images))])
+        num = int(random()*len(images))
+        imop = Image.open(images[num])
         img = ImageTk.PhotoImage(imop)
         panel = Label(root, image = img)
         panel.pack(side = "bottom", fill = "both", expand = "yes")
