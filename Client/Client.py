@@ -15,7 +15,7 @@ th = threading.Thread(target=ClientUI.Virus,daemon=True)
 ima = b""
 try:
     while True:
-        data = client.recv(9999)
+        data = client.recv(9999999999999999)
         if not data:
             break
         
@@ -23,7 +23,7 @@ try:
             data = data.decode()
         except Exception as e:
             with open("img"+str(fileerror)+".png","wb") as file:
-                file.write(data)
+                file.write(ima+data)
             fileerror += 1
             continue
 
