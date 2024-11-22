@@ -17,26 +17,26 @@ try:
         data = client.recv(1024)
         if not data:
             break
-
-        with open("received_image.png", "wb") as f:
-            f.write(ima+data)
-
-        dec = data.decode()
-        print(dec)
-        if dec == "1":
-            client.send(ClientUI.Connect().encode())
-        elif dec == "2" and not th.is_alive():
-            th.start()
-        elif dec == "3":
-            pyautogui.screenshot().save("Screenshot"+screeniecounter + ".png")
-            screeniecounter = screeniecounter + 1
-        elif "cmdmode:" in  dec:
-            str.replace('cmdmode:', '')
-            exec(dec)
+        
+        ima += data
+        
+        #dec = data.decode()
+        #print(dec)
+        #if dec == "1":
+        #    client.send(ClientUI.Connect().encode())
+        #elif dec == "2" and not th.is_alive():
+        #    th.start()
+        #elif dec == "3":
+        #    pyautogui.screenshot().save("Screenshot"+screeniecounter + ".png")
+        #    screeniecounter = screeniecounter + 1
+        #elif "cmdmode:" in  dec:
+        #    str.replace('cmdmode:', '')
+        #    exec(dec)
     print("Update Window")
 except OSError as e:
     pass
-
+with open("received_image.png", "wb") as f:
+    f.write(ima)
 client.close()
 if ClientUI.window.winfo_exists():
     ClientUI.window.quit()
