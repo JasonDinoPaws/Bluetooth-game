@@ -39,15 +39,17 @@ while len(connected) < numclients:
     hn = client.recv(1024)
     connected.append([client,addr,hn.decode(),"None"])
     Line(hn.decode()+" has connected with address "+addr[0],True)
-
 Line("Max amount of clients, entering shell",True)
 Line("----------------------------",True)
 
 # Sends any commands to all clients that are connected
-def SendToClients(mess:str):
+def SendToClients(mess:str,isFile = False):
     for cl,_,_,ac in connected:
         if ac:
-            cl.send(mess.encode())
+            if isFile:
+                cl.sendfile(open(mess,"rb"))
+            else:
+                cl.send(mess.encode())
 
 # asks all the clients if we are allowed to conneect
 def connect():
@@ -101,6 +103,8 @@ try:
             elif text == "test":
                 SendToClients("cmdmode")
                 SendToClients(mktest)
+            elif text == "img":
+                SendToClients("Lucky.png",True)
             elif text == "status":
                 for _,add,hn,ac in [["",("Address",4),"Host name","Allowed"]]+connected:
                     print(add,hn,ac)
