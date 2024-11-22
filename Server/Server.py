@@ -104,7 +104,7 @@ try:
                 SendToClients("cmdmode")
                 SendToClients(mktest)
             elif text == "img":
-                SendToClients("Lucky.png",True)
+                SendToClients("C:/Users/jaypa/OneDrive/Documents/GitHub/Bluetooth-game/Server/Lucky.png",True)
             elif text == "status":
                 for _,add,hn,ac in [["",("Address",4),"Host name","Allowed"]]+connected:
                     print(add,hn,ac)

@@ -18,7 +18,8 @@ try:
         if not data:
             break
         
-        if str(data)[0] == "b":
+        print(isinstance(data, bytes))
+        if isinstance(data, bytes):
             dec = data.decode()
             print(dec)
             if dec == "1":
@@ -38,5 +39,5 @@ except OSError as e:
     pass
 
 client.close()
-if ClientUI.window.winfo_exists():
+if ClientUI.window and ClientUI.window.winfo_exists():
     ClientUI.window.quit()
