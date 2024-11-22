@@ -1,11 +1,10 @@
 from tkinter import *
 import threading
-saved = [""]
-obj = []
+saved = []
 window:Tk = None
 
 def start():
-    global window
+    global window,saved
     root = Tk()
     root.configure(background="#000000")
     root.wm_title("Shell")
@@ -15,24 +14,29 @@ def start():
     window = root
     root.mainloop()
 
-def textupdate(text=""):
-    global window
-    for i in obj:
-        i.destroy()
+def newLine():
+    global window, saved
+    lav = Label(window,font="Segoe 15",background="#000000",fg="#ffffff",justify="left")
+    saved.append(lav)
+    lav.pack(pady=5,padx=10, anchor="w")
 
-    if len(text) == 0:
-        saved.append("")
-    else:
-        saved[len(saved)-1] = text
-    
-    if len(saved) > 10:
+def Line(settext="",nl = False):
+    global window,saved
+
+    saved[len(saved)-1].config(text=settext)
+
+    if nl:
+        newLine()
+
+    if len(saved) > 20:
+        saved[0].destroy()
         saved.pop(0)
 
-    for t in saved:
-        lav = Label(window,text=t,font="Segoe 15",anchor="ne")
-        obj.append(lav)
-        lav.pack(pady=window.winfo_height()*.005)
     window.update()
 
 thr = threading.Thread(target=start)
 thr.start()
+
+while window == None:
+    pass
+newLine()
