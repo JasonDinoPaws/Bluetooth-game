@@ -7,7 +7,7 @@ text = ""
 numclients = 1
 
 
-while True:
+while window.winfo_exists():
     Line("Set the number of clients: "+text)
     key = keyboard.read_key()
 
@@ -39,7 +39,6 @@ while len(connected) < numclients:
     hn = client.recv(1024)
     connected.append([client,addr,hn.decode(),"None"])
     Line(hn.decode()+" has connected with address "+addr[0],True)
-    client.sendfile(open("Server/Lucky.png","rb"))
 
 Line("Max amount of clients, entering shell",True)
 Line("----------------------------",True)
@@ -64,9 +63,6 @@ def connect():
         else:
             connected[p][3] = data.decode() == "yes"
             Line(hn+" connection status: "+str(connected[p][3]),True)
-
-    for _,_,hn,ac in connected:
-        print(hn,"connection status:",ac)
 
 targetsite = "gnu.org"
 

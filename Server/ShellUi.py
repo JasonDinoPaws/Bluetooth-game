@@ -16,6 +16,9 @@ def start():
 
 def newLine():
     global window, saved
+    if len(saved) > 0:
+        saved[len(saved)-1].config(text=saved[len(saved)-1].cget("text")[:-1])
+
     lav = Label(window,font="Segoe 15",background="#000000",fg="#ffffff",justify="left")
     saved.append(lav)
     lav.pack(pady=5,padx=10, anchor="w")
@@ -23,7 +26,7 @@ def newLine():
 def Line(settext="",nl = False):
     global window,saved
 
-    saved[len(saved)-1].config(text=settext)
+    saved[len(saved)-1].config(text=settext+"|")
 
     if nl:
         newLine()
