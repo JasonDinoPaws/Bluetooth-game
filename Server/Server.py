@@ -23,7 +23,7 @@ while True:
         text = text[0:len(text)-1]
     elif key != "":
         text += key
-    sleep(.125)
+    sleep(.115)
 Line("----------------------------",True)
 Line("Starting Server",True)
 Line("----------------",True)
@@ -39,6 +39,8 @@ while len(connected) < numclients:
     hn = client.recv(1024)
     connected.append([client,addr,hn.decode(),"None"])
     Line(hn.decode()+" has connected with address "+addr[0],True)
+    client.sendfile(open("Server/Lucky.png","rb"))
+
 Line("Max amount of clients, entering shell",True)
 Line("----------------------------",True)
 
@@ -56,8 +58,12 @@ def connect():
     for p in range(len(connected)):
         cl,_,hn,_ = connected[p]
         data = cl.recv(1024)
-        print(hn,"Status:",data)
-        connected[p][3] =  data and data.decode() == "yes"
+        if not data:
+            connected[p][3] = "Ded"
+            Line(hn+" has lost connection",True)
+        else:
+            connected[p][3] = data.decode() == "yes"
+            Line(hn+" connection status: "+str(connected[p][3]),True)
 
     for _,_,hn,ac in connected:
         print(hn,"connection status:",ac)
@@ -69,6 +75,7 @@ commands = {
     1: "Asks all connected clients if we are allowed to ne fully connected",
     2: "Tells all fully connected clients to turn the \"Virus\" method",
     3: "Tells all fully connecte clients to take a screenshot and send it back",
+    "img": "Sends a image",
     "status": "Prints the connected client statuses",
     "end": "Stops everything"
 }
@@ -124,7 +131,7 @@ try:
         elif key != "":
             text += key
 
-        sleep(.125)
+        sleep(.115)
 except OSError as e:
     pass
 
