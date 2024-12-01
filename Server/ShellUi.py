@@ -26,6 +26,9 @@ def newLine():
 
 def Line(settext="",nl = False):
     global window,saved
+    
+    if len(saved) == 0:
+        newLine()
 
     saved[len(saved)-1].config(text=settext+"|")
 
@@ -38,13 +41,23 @@ def Line(settext="",nl = False):
 
     window.update()
 
-def Simage(image:PhotoImage):
+def Simage(img:PhotoImage):
     global window,saved
 
-    saved[len(saved)-1].config(img = image)
+    if len(saved) == 0:
+        newLine()
+
+    saved[len(saved)-1].config(image = img)
     newLine()
 
+def createLabel(master=window):
+    return Label(master,font="Segoe 15",background="#000000",fg="#ffffff")
 
+def clear():
+    global window,saved
+    for i in saved:
+        i.destroy()
+    saved = []
 thr = threading.Thread(target=start)
 thr.start()
 
