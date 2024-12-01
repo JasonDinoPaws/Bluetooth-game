@@ -148,7 +148,7 @@ def Screenshot():
         img.write(image)
     img = Image.open("screen.png")
     sw,sh = img.size
-    img = img.resize((int(sw/1.25), int(sh/1.25)))
+    img = img.resize((int(sw/1.5), int(sh/1.5)))
     img = ImageTk.PhotoImage(img)
     savedimgs.append(img)
     Simage(img)
@@ -189,7 +189,7 @@ def SCS(cl=None,a="",h="",al=""):
             img.write(image)
         img = Image.open("screen.png")
         sw,sh = img.size
-        img = img.resize((int(sw/1.25), int(sh/1.25)))
+        img = img.resize((int(sw/1.5), int(sh/1.5)))
         img = ImageTk.PhotoImage(img)
         screen.config(image = img) 
         sleep(.3)
@@ -231,7 +231,7 @@ try:
                 break
             elif text == "fs": # Sedns all clients the full shutdown protocall
                 for c,_,_,_ in connected:
-                    c.send("fs")
+                    c.send("fs".encode())
 
             elif text == "1": # Connect
                 connect() 
