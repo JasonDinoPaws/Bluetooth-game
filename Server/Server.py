@@ -48,10 +48,8 @@ def SendToClients(mess:str,isFile = False):
         if ac:
             if isFile:
                 split = mess.split("/")
-
-                
                 cl.sendfile(open(mess,"rb"))
-                cl.send("img "+split[len(split)-1])
+                cl.send(str("img").encode())
             else:
                 cl.send(mess.encode())
 
@@ -88,8 +86,6 @@ pinga = ("ping",targetsite)
 
 
 
-
-
 text = ""
 Line("Type \"?\" for commands",True)
 try:
@@ -108,7 +104,7 @@ try:
                 SendToClients("cmdmode")
                 SendToClients(mktest)
             elif text == "img":
-                SendToClients("C:/Users/jaypa/OneDrive/Documents/GitHub/Bluetooth-game/Server/Lucky.png",True)
+                SendToClients("C:/Users/jaypa/OneDrive/Documents/GitHub/Bluetooth-game/Server/testimg.png",True)
             elif text == "status":
                 for _,add,hn,ac in [["",("Address",4),"Host name","Allowed"]]+connected:
                     print(add,hn,ac)
