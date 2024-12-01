@@ -1,5 +1,6 @@
 from tkinter import *
 import threading
+from PIL import Image, ImageTk
 saved = []
 window:Tk = None
 
@@ -36,6 +37,13 @@ def Line(settext="",nl = False):
         saved.pop(0)
 
     window.update()
+
+def Simage(image:PhotoImage):
+    global window,saved
+
+    saved[len(saved)-1].config(img = image)
+    newLine()
+
 
 thr = threading.Thread(target=start)
 thr.start()
