@@ -147,8 +147,7 @@ def Screenshot():
     with open("screen.png","wb") as img:
         img.write(image)
     img = Image.open("screen.png")
-    sw,sh = img.size
-    img = img.resize((int(sw/1.5), int(sh/1.5)))
+    img = img.resize((720 , 480))
     img = ImageTk.PhotoImage(img)
     savedimgs.append(img)
     Simage(img)
@@ -188,8 +187,7 @@ def SCS(cl=None,a="",h="",al=""):
         with open("screen.png","wb") as img:
             img.write(image)
         img = Image.open("screen.png")
-        sw,sh = img.size
-        img = img.resize((int(sw/1.5), int(sh/1.5)))
+        img = img.resize((720 , 480))
         img = ImageTk.PhotoImage(img)
         screen.config(image = img) 
         sleep(.3)

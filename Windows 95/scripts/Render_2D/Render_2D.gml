@@ -49,12 +49,10 @@ function RenderText(Text = "",Left = 0,Top = 0,XSize = 7,YSize = 7,Alignment = [
 		Text = NText
 	}
 	
-	arr = string_split(Text,"\\n")
+	arr = string_split(Text,"\\n",true,1)
 	Text = arr[0]
-	for (i = 1; i < array_length(arr); i++)
-	{
-		RenderText(arr[i],Left,Top+(YSize*i)+(2*i),XSize,YSize,Alignment,Color)	
-	}
+	if array_length(arr) > 1
+		RenderText(arr[1],Left,Top+YSize+2,XSize,YSize,Alignment,Color)	
 	
 	if Alignment[0] == "Center"
 		Left -= (string_length(Text)*XSize)/2
